@@ -1,0 +1,70 @@
+// --- Container --------
+%container-size {
+	margin: 0 auto;
+	padding: 0 15px;
+	max-width: 1220px; // 1180(laptop-small) + 40px of padding
+
+	@include mq(tablet){
+		padding: 0 20px;
+	}
+}
+
+// --- Wrapper ----------
+%wrapper {
+	margin: 0;
+
+	@include mq(tablet){
+		margin: 30px 0 0 0;
+	}
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+html {
+	color: color(river-bed);
+	font-size: 62.5%;
+	overflow-x: hidden;
+	-webkit-text-size-adjust: 100%; /* iOS Prevent font scaling in landscape while allowing user zoom */
+}
+
+body {
+	font-family: $sharp-medium;
+	margin: 0;
+
+	.ios & {
+		overflow-x: hidden;
+	}
+}
+
+// ---- Controlers layout ----------
+
+.container-size {
+	@extend %container-size;
+}
+
+.container-small {
+	@extend %container-size;
+
+	max-width: 740px; // 700(laptop-small) + 40px of padding
+}
+
+.wrapper-main {
+	@extend %wrapper;
+
+	display: block;
+	transition: $transition-03;
+}
+
+// Default properties
+
+%margin-bottom {
+	margin-bottom: 15px;
+
+	@include mq(tablet){
+		margin-bottom: 30px;
+	}
+}

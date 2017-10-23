@@ -1,0 +1,51 @@
+
+.sg__nav {
+	background: #fff;
+    box-shadow: 0px 0 20px 0px rgba(0,0,0,.1);
+    font-size: 1rem;
+	height: 100%;
+	overflow: auto;
+    padding: 20px;
+	position: fixed;
+	left: 0;
+	top: 0;
+    transition: all 0.2s;
+	max-width: 120px;
+
+    &:active,
+    &:focus,
+    &:hover {
+        font-size: 1.5rem;
+		max-width: 1000px;
+    }
+
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.sg__nav__links {
+	li {
+		padding: 0 0 0 10px;
+	}
+}
+
+.sg__nav__link {
+    color: #000;
+    display: block;
+    margin: 0 0 10px;
+    text-decoration: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+        text-decoration: underline;
+    }
+}

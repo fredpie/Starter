@@ -1,0 +1,19 @@
+
+%placeholder,
+.placeholder {
+	align-items: center;
+	background: grey;
+	color: #fff;
+	display: flex;
+	justify-content: center;
+
+	p {
+		font-size: 3rem;
+	}
+}
+
+.placeholder--300 {
+	@extend %placeholder;
+
+	height: 300px;
+}

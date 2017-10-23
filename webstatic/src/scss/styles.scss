@@ -1,0 +1,36 @@
+//
+// global imports
+//
+
+// all global depedent files
+// do not change the order if you are not sure
+
+@import "global/variables";
+@import "global/fonts";
+@import "global/structure/breakpoints";
+@import "global/colors";
+@import "global/typography";
+
+// action
+@import "global/animations/generic";
+
+// form elements
+@import "global/form-elements/form-elements";
+@import "global/form-elements/buttons";
+@import "global/form-elements/select";
+
+// tools
+@import "global/tools/borders";
+@import "global/tools/elements-states";
+@import "global/tools/effect";
+@import "global/tools/tools";
+
+// structure
+@import "global/structure/grid";
+@import "global/structure/structure";
+
+/* ---------------------------------------------------------------------------------------------------------------------
+    MODULES
+  --------------------------------------------------------------------------------------------------------------------- */
+
+@import "global/header";

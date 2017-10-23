@@ -1,0 +1,68 @@
+@function breakpoint($breakpoint-name) {
+  @return map-get($breakpoints, $breakpoint-name);
+}
+
+
+$breakpoints: (
+    phone-large:      400px,
+    phone-landscape:  600px,
+    tablet-small:     680px,
+    tablet:           768px,
+    tablet-med:	      930px,
+    tablet-landscape: 1024px,
+    laptop-small:     1180px,
+    laptop:           1366px,
+    desktop:          1600px,
+    desktop-large:    1920px,
+	// special breakpoints
+	menu-desktop: 	  1840px
+);
+
+// main breakpoints :
+//     tablet
+//     tablet-landscape
+
+@mixin mq($width, $type: min) {
+    @if map_has_key($breakpoints, $width) {
+        $width: map_get($breakpoints, $width);
+        @if $type == max {
+            $width: $width - 1px;
+        }
+        @media only screen and (#{$type}-width: $width) {
+            @content;
+        }
+    }
+
+    @else {
+       @warn "Unfortunately, no value `#{$width}` could not be retrieved from `#{$breakpoints}`. "
+           + "Please make sure it is defined in `$breakpoints` map.";
+     }
+}
+
+// usage
+// default min-width
+//  @include mq(desktop) {
+//        font-size: 2.4rem;
+//  }
+
+// with max-width
+//  @include mq(phone, max) {
+//        font-size: 2.4rem;
+//  }
+
+@mixin mq-height($height, $type: min) {
+    @if map_has_key($breakpoints, $height) {
+        $height: map_get($breakpoints, $height);
+        @if $type == max {
+            $height: $height - 1px;
+        }
+        @media only screen and (#{$type}-height: $height) {
+            @content;
+        }
+    }
+
+    @else {
+       @warn "Unfortunately, no value `#{$height}` could not be retrieved from `#{$breakpoints}`. "
+           + "Please make sure it is defined in `$breakpoints` map.";
+     }
+}

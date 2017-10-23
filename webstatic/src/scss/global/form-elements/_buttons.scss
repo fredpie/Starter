@@ -1,0 +1,276 @@
+
+// button generic codes
+button {
+	cursor: pointer;
+	-webkit-appearance: none; // cancel the default style off the iOS browser on iPhone (Safari)
+
+	&[disabled] {
+		cursor: not-allowed;
+	}
+}
+
+.button-flex-container {
+	align-items: center;
+	display: flex;
+}
+
+// primary buttons generic codes
+%button--placeholder {
+	@extend %margin-bottom;
+
+	align-items: center;
+	border-radius: 6px;
+	display: inline-flex;
+	font-family: $sharp-medium;
+	font-size: 1.3rem;
+	justify-content: center;
+	line-height: 1.54;
+	padding: 7px 23px;
+	text-decoration: none;
+	transition: $transition;
+
+	@include mq(tablet-landscape){
+		border-radius: 10px;
+		font-size: 1.6rem;
+		padding: 11px 23px 10px;
+	}
+
+	svg,
+	img {
+		height: 35px;
+		margin: 0 10px 0 0;
+		object-fit: contain;
+		width: 35px;
+	}
+}
+
+// button primary
+.button--primary {
+	@extend %button--placeholder;
+
+	background: color(wisteria);
+	border: 1px solid transparent;
+	color: color(white);
+
+	@include mq(tablet){
+		border: 2px solid transparent;
+	}
+
+    &:focus,
+    &:hover{
+    	background: color(affair);
+    }
+
+	&:active {
+        background: color(river-bed);
+    }
+
+    &[disabled]{
+        background: color(porcelain);
+        color: color(hit-gray);
+    }
+}
+
+// button secondary
+%button--secondary,
+.button--secondary {
+	@extend %button--placeholder;
+
+	background: color(white);
+	border: 1px solid color(wisteria);
+	color: color(wisteria);
+
+	@include mq(tablet){
+		border: 2px solid color(wisteria);
+	}
+
+	&:active {
+		background: color(river-bed);
+	}
+
+	&:focus,
+	&:hover{
+		background: color(affair);
+		border: 1px solid color(affair);
+		color: color(white);
+
+		@include mq(tablet){
+			border: 2px solid color(affair);
+		}
+	}
+
+	&[disabled]{
+		background: color(porcelain);
+		border: 1px solid color(porcelain);
+		color: color(hit-gray);
+
+		@include mq(tablet){
+			border: 2px solid color(porcelain);
+		}
+	}
+}
+
+
+// button back-to-top
+.back-to-top {
+	align-items: center;
+	justify-content: center;
+	border: 2px solid color(porcelain);
+	border-radius: 7px;
+	color: color(wisteria);
+	display: inline-flex;
+	flex-direction: column;
+  	font-family: $sharp-extrabold;
+	font-size: 0.675rem;
+	height: 45px;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
+	width: 45px;
+
+	@include mq(tablet){
+		border-radius: 12px;
+		width: 90px;
+		height: 90px;
+		font-size: 1.2rem;
+	}
+
+	@include mq(tablet-landscape){
+		transition: $transition;
+		border-radius: 12px;
+
+		&:hover,
+		&:focus {
+			background-color: color(affair);
+			border-color: color(affair);
+			color: color(white);
+			.btt__icon {
+				path {
+					transition: $transition;
+					stroke: color(white);
+				}
+			}
+		}
+	}
+
+	// button text
+	.btt__txt-btn {
+		position: relative;
+
+		&:lang(fr){
+			&:before {
+				content: "haut";
+			}
+		}
+
+		&:lang(en){
+			&:before {
+				content: "top";
+			}
+		}
+	}
+
+	.btt__icon {
+		flex-shrink: 0;
+		height: 20px;
+		width: 14px;
+		margin-bottom: 5px;
+
+		@include mq(tablet){
+			height: 37px;
+			width: 26px;
+		}
+
+		path {
+			transition: $transition;
+			stroke: color(wisteria);
+		}
+	}
+}
+
+// Link title
+.link-title {
+	@extend %heading-large;
+	color: color(wisteria);
+	display: inline-block;
+	margin: 0 0 10px;
+	position: relative;
+	text-decoration: underline;
+}
+
+// Button Categories
+.button--faq-categories{
+	align-items: center;
+	background-color: color(porcelain);
+	border: none;
+	color: color(river-bed);
+	display: flex;
+	font-family: $sharp-medium;
+	font-size: 1.4rem;
+	padding: 35px 20px 25px 40px;
+	position: relative;
+	text-align: left;
+	transition: $transition-03;
+	width: 100%;
+
+	&:active,
+	&:focus {
+		transition: $transition-03;
+		background: color(white);
+	}
+
+
+	@include mq(tablet){
+		font-size: 1.8rem;
+	}
+
+	@include mq(tablet-landscape){
+		&:hover {
+			transition: $transition-03;
+			background: color(white);
+		}
+	}
+
+	.faq-arrow {
+		width: 20px;
+		height: 20px;
+		margin-right: 15px;
+		path{
+			stroke: color(river-bed);
+		}
+	}
+}
+
+// --- LANG SWITCHER
+.lang-switcher-container {
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			a.language-link {
+				align-items: center;;
+				background: color(river-bed);
+				border-radius: 3px;
+				color: color(white);
+				display: flex;
+				font-family: $sharp-bold;
+				font-size: 1.4rem;
+				height: 24px;
+				justify-content: center;
+				letter-spacing: 0.8px;
+				text-transform: uppercase;
+				text-decoration: none;
+				width: 31px;
+
+				&:active,
+				&:focus,
+				&:hover {
+					background: color(affair);
+				}
+			}
+		}
+	}
+}

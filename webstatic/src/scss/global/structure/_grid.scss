@@ -1,0 +1,49 @@
+// GRID
+// Created: 02/10/2017
+// Updated: -
+
+
+// --- Clear ----------
+%clearFix {
+  overflow: auto;
+  width: 100%;
+}
+
+.cl {
+  @extend %clearFix;
+}
+
+// --- Column layout --------
+// --- Spacing
+.column + .column {
+  @include mq(tablet-landscape) {
+    margin-left: 20px;
+  }
+}
+
+// --- Type column --------
+.column-one-third {
+  @include mq(tablet-landscape){
+    display: inline-block;
+    vertical-align: top;
+    width: calc(35% - 12.5px);
+  }
+}
+
+.column-two-third {
+  @include mq(tablet-landscape){
+	display: inline-block;
+    vertical-align: top;
+    width: calc(65% - 12.5px);
+  }
+}
+
+.column-half {
+  @include mq(tablet-landscape){
+    display: inline-block;
+    vertical-align: top;
+    width: calc(50% - 12.5px);
+  }
+}
+
+

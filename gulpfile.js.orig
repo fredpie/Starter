@@ -1,0 +1,736 @@
+<<<<<<< refs/remotes/origin/develop
+var autoprefixer    = require('autoprefixer'),
+    browserslist    = require('browserslist'),
+    browserSync     = require('browser-sync'),
+    cache           = require('gulp-cache'),
+    concat 		    = require('gulp-concat'),
+    cssnano         = require('cssnano'),
+    extender        = require('gulp-html-extend'),
+    gulp            = require('gulp'),
+    image           = require('gulp-image'),
+    imagemin        = require('gulp-imagemin'),
+    plumber         = require('gulp-plumber'),
+    postcss         = require('gulp-postcss'),
+    reload          = browserSync.reload,
+    rename          = require('gulp-rename'),
+    sass            = require('gulp-sass'),
+    sourcemaps      = require('gulp-sourcemaps'),
+    svgmin          = require('gulp-svgmin'),
+    notify          = require('gulp-notify'),
+    uglify          = require('gulp-uglify');
+
+var path_custom = 'web/themes/custom/zagbank/',
+    path_dist = 'web/themes/custom/zagbank/dist/',
+    path_dist_fonts = 'web/themes/custom/zagbank/dist/fonts',
+    path_dist_js = 'web/themes/custom/zagbank/dist/js',
+    path_dist_css = 'web/themes/custom/zagbank/dist/css',
+    path_dist_html = 'web/themes/custom/zagbank/dist/html',
+    path_dist_img = 'web/themes/custom/zagbank/dist/images',
+    path_dist_svg = 'web/themes/custom/zagbank/dist/svg',
+    path_webstatic = 'web/themes/custom/zagbank/webstatic/',
+    path_webstatic_fonts = 'web/themes/custom/zagbank/webstatic/fonts/',
+    path_webstatic_js = 'web/themes/custom/zagbank/webstatic/js/',
+    path_webstatic_scss = 'web/themes/custom/zagbank/webstatic/scss/',
+    path_webstatic_img = 'web/themes/custom/zagbank/webstatic/images/',
+    path_webstatic_svg = 'web/themes/custom/zagbank/webstatic/svg/',
+    path_webstatic_html = 'web/themes/custom/zagbank/webstatic/html-static/',
+    path_webstatic_styleguide = 'web/themes/custom/zagbank/webstatic/styleguide/';
+
+var env_type = 'dev';
+var reload_stream = browserSync.reload({stream:false});
+
+gulp.task('env--prod', function () {
+    env_type = 'prod';
+    reload_stream = ''
+});
+
+//
+// Static server
+//
+
+gulp.task('browser-sync', function() {
+    browserSync.init([path_dist+'css/**/*.css', path_dist+'js/**/*.js', path_dist+'html-static/**/*.html'], {
+        port: 8082,
+        reloadDelay: 500,
+        open: false,
+        server: {
+            baseDir: "./web/",
+            directory: true
+        },
+        ui: {
+            port: 3000
+        }
+    });
+});
+
+//
+// fonts build tasks
+//
+
+gulp.task('fonts', function () {
+  gulp.src( path_webstatic_fonts + '/**/*.*')
+  .pipe(gulp.dest( path_dist_fonts ));
+});
+
+
+//
+// SCSS build tasks
+//
+
+gulp.task('styles', function(){
+    var css_compression = {outputStyle: 'expanded'};
+    if( env_type === 'prod' ) {
+        css_compression = {outputStyle: 'compressed'};
+    }
+
+    var processors = [
+        autoprefixer({browsers: ['not ie < 11','iOS >= 9','Android >= 47']})
+    ];
+
+    gulp.src([ path_webstatic_scss + '**/*.scss'])
+    .pipe(sourcemaps.init())
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+    }}))
+    .pipe(sass(css_compression))
+    .pipe(postcss(processors))
+    .pipe(rename({
+      suffix: '.min'
+    }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest( path_dist + 'css/' ))
+
+
+    browserSync.reload({stream:true});
+});
+
+//
+// JavaScript build tasks
+//
+
+gulp.task('js-static', function() {
+  return gulp.src([
+    path_webstatic_js + 'static-only/jquery-2.2.3.js',
+    path_webstatic_js + 'static-only/underscore-1.8.3.js',
+    ])
+  .pipe(sourcemaps.init())
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-head', function() {
+    var js_compression = { mangle: false, output: { beautify: true } };
+    if( env_type === 'prod' ) {
+        js_compression = {mangle: true, output: {beautify: false}};
+    }
+
+    return gulp.src([
+        path_webstatic_js + 'head/modernizr-3.3.1.js',
+        path_webstatic_js + 'head/detectizr.js',
+        path_webstatic_js + 'head/revealizr-2.0.js'
+    ])
+    .pipe(sourcemaps.init())
+    .pipe(concat('head.min.js'))
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+        }
+     }))
+    .pipe(uglify(js_compression))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-plugins', function() {
+    var js_compression = { mangle: false, output: { beautify: true } };
+    if( env_type === 'prod' ){
+        js_compression = { mangle: true, output: { beautify: false } };
+    }
+
+  return gulp.src( path_webstatic_js + 'plugins/**/*.js' )
+  .pipe(sourcemaps.init())
+  .pipe(concat('plugins.min.js'))
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+    .pipe(uglify(js_compression))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-dev', function() {
+    var js_compression = { mangle: false, output: { beautify: true } };
+    if( env_type === 'prod' ){
+        js_compression = { mangle: true, output: { beautify: false } };
+    }
+
+  return gulp.src([ path_webstatic_js + 'modules/**/*.js', path_webstatic_js + 'main.js' ])
+  .pipe(sourcemaps.init())
+  .pipe(concat('main.min.js'))
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+    .pipe(uglify(js_compression))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-templates', function () {
+    var js_compression = { mangle: false, output: { beautify: true } };
+    if( env_type === 'prod' ){
+        js_compression = { mangle: true, output: { beautify: false } };
+    }
+
+  gulp.src( path_webstatic_js + 'dev/templates/**/*.*' )
+      .pipe(sourcemaps.init())
+    .pipe(rename({
+      suffix: '.min'
+    }))
+    .pipe(plumber({
+        errorHandler: function (error) {
+          console.log(error.message);
+          this.emit('end');
+      }}))
+      .pipe(uglify(js_compression))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js', [
+    'js-static',
+    'js-head',
+    'js-plugins',
+    'js-dev',
+    'js-templates'
+]);
+
+//
+// HTML build tasks
+//
+
+gulp.task('html', function(){
+    return gulp.src([ path_webstatic_html + '/pages/**/*.html' ])
+      .pipe(extender({
+          annotations:true,
+          verbose:true,
+          root: './'
+        }
+      ))
+      .pipe(plumber({
+        errorHandler: function (error) {
+          console.log(error.message);
+      }}))
+      .pipe(gulp.dest( path_dist_html ))
+      .pipe(browserSync.stream());
+});
+
+//
+// SVG build tasks
+//
+
+gulp.task('svg', function () {
+    return gulp.src( path_webstatic_svg + '**/*.svg' )
+        .pipe(svgmin())
+        .pipe(gulp.dest( path_dist_svg ));
+});
+
+//
+// Images build tasks
+//
+
+gulp.task('images', function () {
+    return gulp.src( path_webstatic_img + '**/*.*' )
+        //.pipe(image()) TODO
+        .pipe(gulp.dest( path_dist_img ));
+});
+
+//
+// Styleguide build tasks
+//
+
+gulp.task('styleguide-html', function(){
+    return gulp.src([ path_webstatic_styleguide + 'html/**/*.html' ])
+      .pipe(extender({
+          annotations:true,
+          verbose:false,
+          root: './'
+        }
+      ))
+      .pipe(plumber({
+        errorHandler: function (error) {
+          console.log(error.message);
+      }}))
+      .pipe(gulp.dest( path_dist_html + '/styleguide/' ))
+      .pipe(browserSync.stream());
+});
+
+
+gulp.task('styleguide-scss', function(){
+    var css_compression = {outputStyle: 'expanded'};
+    if( env_type === 'prod' ){
+        css_compression = {outputStyle: 'compressed'};
+    }
+
+    var processors = [
+        autoprefixer({browsers: ['not ie < 11','iOS >= 9','Android >= 47']})
+    ];
+  gulp.src([ path_webstatic_styleguide + 'scss/**/*.scss'])
+    .pipe(sourcemaps.init())
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+    }}))
+    .pipe(sass())
+    .pipe(postcss(processors))
+    .pipe(rename({
+      suffix: '.min'
+    }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest( path_dist + 'css/' ))
+    .pipe(browserSync.reload({stream:true}))
+});
+
+
+gulp.task('styleguide-js', function() {
+    var js_compression = { mangle: false, output: { beautify: true } };
+    if( env_type === 'prod' ){
+        js_compression = { mangle: true, output: { beautify: false } };
+    }
+
+  return gulp.src([
+    path_webstatic_styleguide + 'js/modules/**/*.js',
+        path_webstatic_styleguide + 'js/main.js'
+    ])
+  .pipe(sourcemaps.init())
+  .pipe(concat('styleguide.js'))
+    .pipe(plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+    .pipe(uglify(js_compression))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('styleguide-img', function () {
+  gulp.src( path_webstatic_styleguide + 'images/**/*.*' )
+    //.pipe(image()) - TODO
+    .pipe(gulp.dest( path_dist_img + '/styleguide' ));
+});
+
+
+gulp.task('styleguide', [
+    'styleguide-html',
+    'styleguide-js',
+    'styleguide-scss',
+    'styleguide-img'
+]);
+
+gulp.task('styleguide-watch', ['browser-sync'], function(){
+    gulp.watch( path_webstatic_styleguide + '**/*.*', ['styleguide' ]);
+});
+
+//
+// watch build tasks
+//
+
+gulp.task('watch', ['browser-sync'], function(){
+  gulp.watch( path_webstatic_scss + '**/*.scss', ['styles' ]);
+    gulp.watch( path_webstatic_js + 'head/*.*', ['js-head' ]);
+    gulp.watch( path_webstatic_js + 'plugins/*.*', ['js-plugins' ]);
+	gulp.watch( path_webstatic_js + 'modules/**/*.*', ['js-dev' ]);
+    gulp.watch( path_webstatic_js + 'main.js', ['js-dev' ]);
+    gulp.watch( path_webstatic_js + 'templates/**/*.*', ['js-templates' ]);
+    gulp.watch( path_webstatic_html + '**/*.*', ['html', 'styleguide' ]);
+});
+
+gulp.task('default', ['browser-sync', 'fonts', 'styles', 'js', 'html', 'svg', 'images', 'styleguide', 'styleguide-watch', 'watch' ]);
+gulp.task('build--dev', ['fonts', 'styles', 'js', 'html', 'svg', 'images', 'styleguide']);
+gulp.task('watch--dev', ['styleguide-watch', 'watch']);
+gulp.task('build--prod', ['env--prod', 'fonts', 'styles', 'js', 'html', 'svg', 'styleguide']);
+=======
+var gulp = require('gulp'),
+    plumber = require('gulp-plumber'),
+    rename = require('gulp-rename'),
+    notify      = require('gulp-notify');
+var postcss    = require('gulp-postcss');
+var autoprefixer = require('autoprefixer');
+
+var    cache = require('gulp-cache');
+var sass = require('gulp-sass');
+var uglify = require('gulp-uglify');
+var browserSync = require('browser-sync');
+var browserslist = require('browserslist');
+var cssnano = require('cssnano');
+var extender     = require('gulp-html-extend');
+var concat    = require('gulp-concat');
+var sourcemaps  = require('gulp-sourcemaps');
+var svgmin = require('gulp-svgmin');
+var image = require('gulp-image');
+var reload       = browserSync.reload;
+
+
+var path_custom = 'web/themes/custom/zagbank/',
+    path_dist = 'web/themes/custom/zagbank/dist/',
+    path_dist_fonts = 'web/themes/custom/zagbank/dist/fonts',
+    path_dist_js = 'web/themes/custom/zagbank/dist/js',
+    path_dist_css = 'web/themes/custom/zagbank/dist/css',
+    path_dist_html = 'web/themes/custom/zagbank/dist/html',
+    path_dist_img = 'web/themes/custom/zagbank/dist/images',
+    path_dist_svg = 'web/themes/custom/zagbank/dist/svg',
+    path_webstatic = 'web/themes/custom/zagbank/webstatic/',
+    path_webstatic_fonts = 'web/themes/custom/zagbank/webstatic/fonts/',
+    path_webstatic_js = 'web/themes/custom/zagbank/webstatic/js/',
+    path_webstatic_scss = 'web/themes/custom/zagbank/webstatic/scss/',
+    path_webstatic_img = 'web/themes/custom/zagbank/webstatic/images/',
+    path_webstatic_svg = 'web/themes/custom/zagbank/webstatic/svg/',
+    path_webstatic_html = 'web/themes/custom/zagbank/webstatic/html-static/';
+path_webstatic_styleguide = 'web/themes/custom/zagbank/webstatic/styleguide/';
+
+var env_type = 'dev';
+var reload_stream = browserSync.reload({stream:false});
+
+gulp.task('env--prod', function () {
+    env_type = 'prod';
+    reload_stream = ''
+});
+
+//
+// Static server
+//
+
+gulp.task('browser-sync', function() {
+    browserSync.init([path_dist+'css/**/*.css', path_dist+'js/**/*.js', path_dist+'html-static/**/*.html'], {
+        port: 8082,
+        reloadDelay: 500,
+        open: false,
+        server: {
+            baseDir: "./web/",
+            directory: true
+        },
+        ui: {
+            port: 666
+        }
+    });
+});
+
+//
+// fonts build tasks
+//
+
+gulp.task('fonts', function () {
+    gulp.src( path_webstatic_fonts + '/**/*.*')
+        .pipe(gulp.dest( path_dist_fonts ));
+});
+
+
+//
+// SCSS build tasks
+//
+
+gulp.task('styles', function(){
+    if( env_type === 'prod' ){
+        var css_compression = {outputStyle: 'compressed'};
+    }else {
+        var css_compression = {outputStyle: 'expanded'};
+    }
+
+    var processors = [
+        autoprefixer({browsers: ['not ie < 11','iOS >= 9','Android >= 47']})
+    ];
+    gulp.src([ path_webstatic_scss + '**/*.scss'])
+        .pipe(sourcemaps.init())
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+            }}))
+        .pipe(sass(css_compression))
+        .pipe(postcss(processors))
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist + 'css/' ))
+
+
+    browserSync.reload({stream:true});
+});
+
+//
+// JavaScript build tasks
+//
+
+gulp.task('js-static', function() {
+
+    return gulp.src([
+        path_webstatic_js + 'static-only/jquery-2.2.3.js',
+        path_webstatic_js + 'static-only/underscore-1.8.3.js',
+    ])
+        .pipe(sourcemaps.init())
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-head', function() {
+    if( env_type === 'prod' ){
+        var js_compression = { mangle: true, output: { beautify: false } };
+    }else {
+        var js_compression = { mangle: false, output: { beautify: true } };
+    }
+
+    return gulp.src([
+        path_webstatic_js + 'head/modernizr-3.3.1.js',
+        path_webstatic_js + 'head/detectizr.js',
+        path_webstatic_js + 'head/revealizr-2.0.js'
+    ])
+        .pipe(sourcemaps.init())
+        .pipe(concat('head.min.js'))
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(uglify(js_compression))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-plugins', function() {
+    if( env_type === 'prod' ){
+        var js_compression = { mangle: true, output: { beautify: false } };
+    }else {
+        var js_compression = { mangle: false, output: { beautify: true } };
+    }
+
+    return gulp.src( path_webstatic_js + 'plugins/**/*.js' )
+        .pipe(sourcemaps.init())
+        .pipe(concat('plugins.min.js'))
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(uglify(js_compression))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-dev', function() {
+    if( env_type === 'prod' ){
+        var js_compression = { mangle: true, output: { beautify: false } };
+    }else {
+        var js_compression = { mangle: false, output: { beautify: true } };
+    }
+
+    return gulp.src([ path_webstatic_js + 'modules/**/*.js', path_webstatic_js + 'main.js' ])
+        .pipe(sourcemaps.init())
+        .pipe(concat('main.min.js'))
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(uglify(js_compression))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js-templates', function () {
+    if( env_type === 'prod' ){
+        var js_compression = { mangle: true, output: { beautify: false } };
+    }else {
+        var js_compression = { mangle: false, output: { beautify: true } };
+    }
+
+    gulp.src( path_webstatic_js + 'dev/templates/**/*.*' )
+        .pipe(sourcemaps.init())
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(uglify(js_compression))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('js', [
+    'js-static',
+    'js-head',
+    'js-plugins',
+    'js-dev',
+    'js-templates'
+]);
+
+//
+// HTML build tasks
+//
+
+gulp.task('html', function(){
+    return gulp.src([ path_webstatic_html + '/pages/**/*.html' ])
+        .pipe(extender({
+                annotations:true,
+                verbose:true,
+                root: './'
+            }
+        ))
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+            }}))
+        .pipe(gulp.dest( path_dist_html ))
+        .pipe(browserSync.stream());
+});
+
+//
+// SVG build tasks
+//
+
+gulp.task('svg', function () {
+    return gulp.src( path_webstatic_svg + '**/*.svg' )
+        .pipe(svgmin())
+        .pipe(gulp.dest( path_dist_svg ));
+});
+
+//
+// Images build tasks
+//
+
+gulp.task('images', function () {
+    return gulp.src( path_webstatic_img + '**/*.*' )
+        .pipe(image())
+        .pipe(gulp.dest( path_dist_img ));
+});
+
+//
+// Styleguide build tasks
+//
+
+gulp.task('styleguide-html', function(){
+    return gulp.src([ path_webstatic_styleguide + 'html/**/*.html' ])
+        .pipe(extender({
+                annotations:true,
+                verbose:false,
+                root: './'
+            }
+        ))
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+            }}))
+        .pipe(gulp.dest( path_dist_html + '/styleguide/' ))
+        .pipe(browserSync.stream());
+});
+
+
+gulp.task('styleguide-scss', function(){
+    if( env_type === 'prod' ){
+        var css_compression = {outputStyle: 'compressed'};
+    }else {
+        var css_compression = {outputStyle: 'expanded'};
+    }
+    var processors = [
+        autoprefixer({browsers: ['not ie < 11','iOS >= 9','Android >= 47']})
+    ];
+    gulp.src([ path_webstatic_styleguide + 'scss/**/*.scss'])
+        .pipe(sourcemaps.init())
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+            }}))
+        .pipe(sass())
+        .pipe(postcss(processors))
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist + 'css/' ))
+        .pipe(browserSync.reload({stream:true}))
+});
+
+
+gulp.task('styleguide-js', function() {
+    if( env_type === 'prod' ){
+        var js_compression = { mangle: true, output: { beautify: false } };
+    }else {
+        var js_compression = { mangle: false, output: { beautify: true } };
+    }
+    return gulp.src([
+        path_webstatic_styleguide + 'js/modules/**/*.js',
+        path_webstatic_styleguide + 'js/main.js'
+    ])
+        .pipe(sourcemaps.init())
+        .pipe(concat('styleguide.js'))
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(uglify(js_compression))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest( path_dist_js ));
+});
+
+gulp.task('styleguide-img', function () {
+    gulp.src( path_webstatic_styleguide + 'images/**/*.*' )
+        .pipe(image())
+        .pipe(gulp.dest( path_dist_img + '/styleguide' ));
+});
+
+
+gulp.task('styleguide', [
+    'styleguide-html',
+    'styleguide-js',
+    'styleguide-scss',
+    'styleguide-img'
+]);
+
+gulp.task('styleguide-watch', ['browser-sync'], function(){
+    gulp.watch( path_webstatic_styleguide + '**/*.*', ['styleguide' ]);
+});
+
+//
+// watch build tasks
+//
+
+gulp.task('watch', ['browser-sync'], function(){
+    gulp.watch( path_webstatic_scss + '**/*.scss', ['styles' ]);
+    gulp.watch( path_webstatic_js + 'head/*.*', ['js-head' ]);
+    gulp.watch( path_webstatic_js + 'plugins/*.*', ['js-plugins' ]);
+    gulp.watch( path_webstatic_js + 'modules/**/*.*', ['js-dev' ]);
+    gulp.watch( path_webstatic_js + 'main.js', ['js-dev' ]);
+    gulp.watch( path_webstatic_js + 'templates/**/*.*', ['js-templates' ]);
+    gulp.watch( path_webstatic_html + '**/*.*', ['html', 'styleguide' ]);
+});
+
+
+
+
+gulp.task('default', ['browser-sync', 'fonts', 'styles', 'js', 'html', 'svg', 'images', 'styleguide', 'styleguide-watch', 'watch' ]);
+gulp.task('build--dev', ['fonts', 'styles', 'js', 'html', 'svg', 'images', 'styleguide']);
+gulp.task('watch--dev', ['styleguide-watch', 'watch']);
+
+
+gulp.task('build--prod', ['env--prod', 'fonts', 'styles', 'js', 'html', 'svg', 'styleguide'], function(){
+});
+>>>>>>> gulp file fix

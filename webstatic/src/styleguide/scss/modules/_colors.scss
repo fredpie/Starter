@@ -1,0 +1,16 @@
+
+.module--colors {
+	color: #000;
+    text-align: center;
+    width: 20%;
+
+    .mc__color {
+        align-items: center;
+        border-radius: 6px;
+        display: flex;
+        height: 100px;
+        margin: 0 0 10px;
+        justify-content: center;
+        width: 100%;
+    }
+}

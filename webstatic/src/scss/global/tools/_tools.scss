@@ -1,0 +1,55 @@
+// Underline text
+.text-underline {
+	text-decoration: underline !important;
+}
+
+// Make a section float around
+.section-infos-flex{
+	display: flex;
+	flex-direction: column;
+
+	@include mq(tablet-landscape){
+		align-items: center;
+		flex-direction: row;
+	}
+
+	.column + .column {
+		.wysiwyg {
+			@include mq(tablet-landscape){
+				padding: 20px;
+			}
+		}
+	}
+}
+
+
+// align items to right
+.align-items-right {
+
+	@include mq(phone-landscape) {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	[class*="button--"] {
+		@include mq(phone-landscape, max) {
+			width: 100%;
+		}
+	}
+
+	[class*="button--"] + [class*="button--"] {
+		@include mq(phone-landscape) {
+			margin-left: 10px;
+		}
+	}
+}
+
+// margins
+
+.margin-bottom-50 {
+	margin-bottom: 25px !important;
+
+	@include mq(tablet) {
+		margin-bottom: 50px !important;
+	}
+}

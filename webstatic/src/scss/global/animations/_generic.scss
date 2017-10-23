@@ -1,0 +1,138 @@
+// Animations generic
+// Created: 01/2016
+// Updated: -
+// Created for: tabs-default(js)
+
+@mixin keyframeCollapse($max-height: 2000px) {
+	animation-name: keyframe--collapse-#{$max-height};
+
+	@keyframes keyframe--collapse-#{$max-height} {
+		0% {
+			max-height: $max-height;
+			overflow: hidden;
+			opacity: 1;
+		}
+		100% {
+			overflow: hidden;
+			max-height: 0;
+			opacity: 0;
+			padding: 0;
+		}
+	}
+}
+
+.animation--collapse {
+	@include keyframeCollapse(2000px);
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+.animation--collapse-300 {
+	@include keyframeCollapse(300px);
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+.animation--collapse-600 {
+	@include keyframeCollapse(600px);
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+@mixin keyframeExpand($max-height: 2000px) {
+	animation-name: keyframe--expand-#{$max-height};
+
+	@keyframes keyframe--expand-#{$max-height} {
+		0% {
+			max-height: 0;
+			overflow: hidden;
+			opacity: 0;
+		}
+		99% {
+			max-height: $max-height;
+			overflow:	 hidden;
+		}
+		100% {
+			overflow: auto;
+			max-height: 1000%; // was auto. Changed because of a bug with ios
+			opacity: 1;
+		}
+	}
+}
+
+// ONLY FOR IE
+@mixin keyframeExpandIE($max-height: 2000px) {
+	animation-name: keyframe--expandIE-#{$max-height};
+
+	@keyframes keyframe--expandIE-#{$max-height} {
+		0% {
+			overflow: hidden;
+			opacity: 0;
+			max-height: 0;
+		}
+		100% {
+			overflow: auto;
+			opacity: 1;
+			max-height: 100%; // was auto. Changed because of a bug with ios
+		}
+	}
+}
+
+.animation--expand {
+	@include keyframeExpand(2000px);
+	animation-duration: 0.5s;
+	animation-fill-mode: forwards;
+
+	.ie & {
+		@include keyframeExpandIE(2000px);
+		animation-duration: 0.5s;
+		animation-fill-mode: forwards;
+	}
+}
+
+.animation--expand-300 {
+	@include keyframeExpand(300px);
+	animation-duration: 0.5s;
+	animation-fill-mode: forwards;
+
+	.ie & {
+		@include keyframeExpandIE(300px);
+		animation-duration: 0.5s;
+		animation-fill-mode: forwards;
+	}
+}
+
+.animation--expand-600 {
+	@include keyframeExpand(600px);
+	animation-duration: 0.5s;
+	animation-fill-mode: forwards;
+
+	.ie & {
+		@include keyframeExpandIE(600px);
+		animation-duration: 0.5s;
+		animation-fill-mode: forwards;
+	}
+}
+
+.tab--content {
+	&--inactive {
+		display: none !important;
+	}
+}
+
+// fade
+
+@keyframes keyframeFadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.animation-fade-out {
+	animation-name: keyframeFadeOut;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}

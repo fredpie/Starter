@@ -1,0 +1,39 @@
+// All colors name must come from this website
+// http://chir.ag/projects/name-that-color/#6195ED
+
+// USAGE
+// color: colors(cerulean);
+
+@function color($color-name) {
+	@return map-get($colors, $color-name);
+}
+
+$colors: (
+	// black
+	batman: 	#000000,
+
+	// gray
+	tundora: 	#454545,
+	dove: 		#656565,
+	nickel: 	#B6B8B1,
+	mercury: 	#E2E2E2,
+
+	// green
+	green-white: #E5E9DF,
+
+	// red
+	monza: 		#E0030C,
+
+	// white
+	white: 		#ffffff
+);
+
+// CREATE
+// BACKGROUND-COLOR
+// Result : bg-(name): #color;
+
+@each $name, $color in $colors {
+	.bg-#{$name} {
+		background-color: #{$color};
+	}
+}

@@ -1,0 +1,28 @@
+// paths
+@function path($path-name) {
+  @return map-get($path, $path-name);
+}
+
+$path: (
+    // dist
+    dist: '/themes/custom/zagbank/dist/',
+    svg: '/themes/custom/zagbank/dist/svg/',
+    fonts: '/themes/custom/zagbank/dist/fonts/'
+);
+
+// usage
+// background: url(path(dist)+'/image.jpg');
+
+// Transition effect
+$transition : all 0.2s linear;
+$transition-03 : all 0.3s linear;
+
+
+// font family
+$sharp-bold: 'sharp-bold', tahoma, sans-serif;
+$sharp-bold-italic: 'sharp-bold-italic', tahoma, sans-serif;
+$sharp-extrabold: 'sharp-extrabold', tahoma, sans-serif;
+$sharp-extrabold-italic: 'sharp-extrabold-italic', tahoma, sans-serif;
+$sharp-medium: 'sharp-medium', tahoma, sans-serif;
+$sharp-medium-italic: 'sharp-medium-italic', tahoma, sans-serif;
+$sharp-book: 'sharp-book', tahoma, sans-serif;

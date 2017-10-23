@@ -1,0 +1,182 @@
+
+.select-custom {
+	position: relative;
+
+	&::before {
+		background-image: url(path(svg)+'generic/arrow-up-down.svg'); background-size: 7.5px 15px;
+		bottom: 0;
+		content: "";
+		display: block;
+		height: 15px;
+		margin: auto;
+		position: absolute;
+		right: 10px;
+		top: 0;
+		width: 7.5px;
+	}
+
+	select {
+		@extend %border-thin--grey;
+
+		appearance: none;
+		background: none;
+		font-family: $sharp-medium;
+		font-size: 1.3rem;
+		height: 35px;
+		padding: 2px 15px 0 15px;
+		width: 100%;
+
+		@include mq(tablet){
+			font-size: 1.6rem;
+			height: 50px;
+			padding: 2px 20px 0 20px;
+		}
+
+		&::-ms-expand {
+			display: none;
+		}
+
+		.no-touchevents &,
+		html:not(.touchevents) & {
+			display: none;
+		}
+	}
+
+	.sc__trigger {
+		@extend %border-thin--grey;
+
+		background: color(white);
+		display: none;
+		font-family: $sharp-medium;
+		font-size: 1.3rem;
+		height: 35px;
+		padding: 2px 15px 0 15px;
+		text-align: left;
+		width: 100%;
+
+		@include mq(tablet){
+			font-size: 1.6rem;
+			height: 50px;
+			padding: 2px 20px 0 20px;
+		}
+
+		&:focus {
+			box-shadow: 0 0 0 3px color(cerulean);
+			border-color: transparent;
+			outline: none;
+		}
+
+		&:disabled {
+			background: color(white);
+			cursor: not-allowed;
+		}
+
+		@at-root .select-custom select.error ~ .sc__trigger {
+			border-color: color(cardinal);
+
+			&:focus {
+				border-color: transparent;
+				box-shadow: 0 0 0 3px color(cardinal);
+			}
+		}
+
+		@at-root .is-active#{&} {
+			border-radius: 10px 10px 0 0;
+			border-bottom: none;
+			box-shadow: 0 0 0 3px color(cerulean);
+			border-color: transparent;
+			outline: none;
+
+			@at-root .select-custom.is-active select.error ~ .sc__trigger {
+				border-color: transparent;
+				box-shadow: 0 0 0 3px color(cardinal);
+			}
+		}
+
+		.no-touchevents & {
+			display: block;
+		}
+	}
+
+	.sc__options {
+		background: color(white);
+		border-color: transparent color(tiara) color(tiara) color(tiara);
+		border-style: solid;
+		border-width: 2px;
+		border-radius: 0 0 6px 6px;
+		color: color(river-bed);
+		display: none;
+		font-family: $sharp-medium;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		width: 100%;
+
+		@at-root .is-active#{&} {
+			.no-touchevents & {
+				box-shadow: 0 0 0 3px color(cerulean);
+				border-width: 2px 0 0 0;
+				outline: none;
+				display: block;
+
+				@at-root .select-custom.is-active select.error ~ .sc__options {
+					box-shadow: 0 0 0 3px color(cardinal);
+				}
+			}
+		}
+
+		&::before {
+			@at-root .is-active#{&} {
+				background: color(white);
+				content: "";
+				display: block;
+				height: 3px;
+				left: 0;
+				position: absolute;
+				top: -5px;
+				width: 100%;
+			}
+		}
+
+		li {
+			width: 100%;
+
+			&:last-child {
+				border-radius: 0 0 6px 6px;
+				overflow: hidden;
+			}
+		}
+	}
+
+	.sc__option {
+		background: color(white);
+		border: none;
+		color: color(river-bed);
+		display: block;
+		font-family: $sharp-medium;
+		font-size: 1.3rem;
+		padding: 9px 17px;
+		text-align: left;
+		text-decoration: none;
+		transition: $transition;
+		width: 100%;
+
+		@include mq(tablet) {
+			font-size: 1.6rem;
+			padding: 9px 22px;
+		}
+
+		&:focus,
+		&:hover,
+		&:active {
+			background: color(affair);
+			color: color(white);
+		}
+
+		&.is-active {
+			background: color(river-bed);
+			color: color(white);
+		}
+	}
+}

@@ -1,0 +1,151 @@
+input,
+textarea {
+	-webkit-appearance: none; // to display the outline on focus when you are on iPhone... Damn you iPhone!
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+
+input[type="submit"],
+input[type="reset"] {
+	cursor: pointer;
+}
+
+// label
+.form-item {
+	@extend %margin-bottom;
+
+	> label:first-child {
+		display: block;
+		font-size: 1.3rem;
+
+		@include mq(tablet, max) {
+			margin-bottom: 10px;
+		}
+
+		@include mq(tablet) {
+			font-size: 1.6rem;
+		}
+	}
+}
+
+// textfields
+%input-textfield,
+.form-select,
+.form-text,
+.form-email {
+	@extend %border-thin--grey;
+
+	font-family: $sharp-medium;
+	font-size: 1.3rem;
+	height: 35px;
+	padding: 2px 15px 0 15px;
+
+	@include mq(tablet){
+		font-size: 1.6rem;
+		height: 50px;
+		padding: 2px 20px 0 20px;
+	}
+
+	.ios & {
+		font-size: 1.6rem;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 3px color(cerulean);
+		border-color: transparent;
+		outline: none;
+	}
+
+	&:disabled {
+		background: color(white);
+		cursor: not-allowed;
+	}
+
+	&.error {
+		border-color: color(cardinal);
+
+		&:focus {
+			box-shadow: 0 0 0 3px color(cardinal);
+			border-color: transparent;
+			outline: none;
+			-webkit-appearance: none; // to display the outline on focus when you are on iPhone... reDamn you iPhone!
+		}
+	}
+}
+
+// textarea
+
+.js-form-type-textarea {
+	> div {
+		width: 100%;
+	}
+
+	label {
+		margin-bottom: 10px;
+	}
+}
+
+.form-textarea {
+	@extend %input-textfield;
+
+	min-height: 150px;
+	overflow: auto;
+	padding-top: 10px;
+	width: 100%;
+}
+
+// checkbox
+
+.js-form-type-checkbox {
+
+	.form-checkbox {
+		position: absolute;
+		opacity: 0;
+	}
+
+	.option {
+		align-items: center;
+		cursor: pointer;
+		display: flex;
+		font-size: 1.3rem;
+
+		@include mq(tablet) {
+			font-size: 1.6rem;
+		}
+
+		&::before {
+			background: color(white);
+			border: 1px solid color(iron);
+			border-radius: 4px;
+			content: "";
+			display: block;
+			height: 20px;
+			margin-right: 10px;
+			width: 20px;
+
+			@include mq(tablet){
+				border: 2px solid color(iron);
+				border-radius: 5px;
+				height: 30px;
+				width: 30px;
+			}
+
+			@at-root .js-form-type-checkbox .form-checkbox:focus ~ .option::before 	{
+				box-shadow: 0 0 0 3px color(cerulean);
+				border-color: transparent;
+				outline: none;
+			}
+
+			@at-root .js-form-type-checkbox .form-checkbox:checked ~ .option::before {
+				background: url(path(svg)+'generic/checked.svg') no-repeat center center;
+				background-size: 16px 14px;
+			}
+		}
+	}
+}

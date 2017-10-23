@@ -1,0 +1,38 @@
+
+html {
+    font-family: Verdana;
+    font-size: 62.5%;
+}
+
+body {
+    margin: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.styleguide {
+
+    //global
+
+    @import "global/structure";
+    @import "global/typo";
+
+    @import "global/header/header";
+    @import "global/header/nav";
+	@import "global/tools/tools";
+    @import "global/sg-fix";
+
+    @import "global/styleguide-ui";
+
+    // modules
+    @import "modules/colors";
+    @import "modules/source-code";
+	@import "modules/typo";
+	@import "modules/tags";
+    @import "modules/placeholder";
+
+}

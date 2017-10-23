@@ -1,0 +1,38 @@
+// Effects products
+// Created: 02/02/2017
+// Updated: -
+// Created for: page de produits
+
+.shadow-top {
+	box-shadow: 0px 30px 22px -10px rgba(0, 0, 0, 0.08);
+    display: block;
+	height: 60px;
+    left:0;
+	margin: -60px 0 30px;
+    position: relative;
+    width:100%;
+    z-index:-1;
+
+	@include mq(tablet){
+		box-shadow: 0px 48px 70px -22px rgba(0, 0, 0, 0.08);
+		height: 110px;
+		margin: -110px 0 30px;
+	}
+}
+
+.shadow-bottom {
+    box-shadow: 0px -30px 22px -10px rgba(0, 0, 0, 0.08);
+    display: block;
+	height: 60px;
+    left:0;
+	margin: 20px 0 -40px;
+    position: relative;
+    width:100%;
+    z-index:-1;
+
+	@include mq(tablet){
+		box-shadow: 0px -48px 70px -22px rgba(0, 0, 0, 0.08);
+		height: 110px;
+		margin: 10px 0 -60px;
+	}
+}

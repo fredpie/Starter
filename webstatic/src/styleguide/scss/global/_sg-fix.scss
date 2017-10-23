@@ -1,0 +1,15 @@
+
+// lightbox_loop
+
+.sg-fix-lightbox {
+	padding: 20px 0;
+	position: relative;
+
+	.lightbox-overlay {
+		position: absolute;
+	}
+
+	.lightbox {
+		position: relative;
+	}
+}

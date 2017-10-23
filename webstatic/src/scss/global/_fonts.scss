@@ -1,0 +1,42 @@
+
+@font-face {
+  font-family: 'sharp-bold';
+  src: url( path(fonts)+'SharpSansDispNo1-Bold.woff2') format('woff2'), // Super Modern Browsers
+  url( path(fonts)+'SharpSansDispNo1-Bold.woff') format('woff'), // Pretty Modern Browsers IE11 +
+}
+
+@font-face {
+  font-family: 'sharp-bold-italic';
+  src: url( path(fonts)+'SharpSansDispNo1-BoldIt.woff2') format('woff2'), // Super Modern Browsers
+  url( path(fonts)+'SharpSansDispNo1-BoldIt.woff') format('woff'), // Pretty Modern Browsers IE11 +
+}
+
+@font-face {
+  font-family: 'sharp-extrabold';
+  src: url( path(fonts)+'SharpSansDispNo1-Extrabold.woff2') format('woff2'), // Super Modern Browsers
+  url( path(fonts)+'SharpSansDispNo1-Extrabold.woff') format('woff'), // Pretty Modern Browsers IE11 +
+}
+
+@font-face {
+  font-family: 'sharp-extrabold-italic';
+  src: url( path(fonts)+'SharpSansDispNo1-ExtraboldIt.woff2') format('woff2'), // Super Modern Browsers
+  url( path(fonts)+'SharpSansDispNo1-ExtraboldIt.woff') format('woff'), // Pretty Modern Browsers IE11 +
+}
+
+@font-face {
+  font-family: 'sharp-medium';
+  src: url( path(fonts)+'SharpSansDispNo1-Medium.woff2') format('woff2'), // Super Modern Browsers
+  url( path(fonts)+'SharpSansDispNo1-Medium.woff') format('woff'), // Pretty Modern Browsers IE11 +
+}
+
+@font-face {
+  font-family: 'sharp-medium-italic';
+  src: url( path(fonts)+'SharpSansDispNo1-MediumIt.woff2') format('woff2'), // Super Modern Browsers
+  url( path(fonts)+'SharpSansDispNo1-MediumIt.woff') format('woff'), // Pretty Modern Browsers IE11 +
+}
+
+@font-face {
+  font-family: 'sharp-book';
+  src: url( path(fonts)+'SharpSansDispNo1-Book.woff2') format('woff2'), // Super Modern Browsers
+  url( path(fonts)+'SharpSansDispNo1-Book.woff') format('woff'), // Pretty Modern Browsers IE11 +
+}

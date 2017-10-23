@@ -1,0 +1,199 @@
+//
+// Headers
+//
+
+%heading-medium,
+.heading-medium {
+	font-family: $sharp-medium;
+	font-size: 1.3rem;
+	line-height: 1.54;
+	margin: 0 0 20px;
+
+	@include mq(tablet-landscape) {
+		font-size: 1.6rem;
+		line-height: 1.63;
+	}
+}
+
+%heading-large,
+.heading-large {
+	font-family: $sharp-bold;
+	font-size: 1.8rem;
+	line-height: 1.33;
+	margin: 0 0 20px;
+
+	@include mq(tablet-landscape) {
+		font-size: 2.4rem;
+		line-height: 1.42;
+	}
+}
+
+.heading-large--background {
+	@extend %heading-large;
+
+	border-radius: 6px 6px 0 0;
+	color: color(white);
+	margin-bottom: 0;
+	padding: 15px;
+
+	@include mq(tablet) {
+		border-radius: 10px 10px 0 0;
+		padding: 30px;
+	}
+}
+
+%heading-xlarge,
+.heading-xlarge {
+	font-family: $sharp-extrabold;
+	font-size: 3rem;
+	line-height: 1.13;
+	margin: 0 0 20px;
+
+	@include mq(tablet-landscape) {
+		font-size: 4rem;
+		line-height: 1.15;
+	}
+}
+
+%heading-xxlarge,
+.heading-xxlarge {
+	font-family: $sharp-extrabold;
+	font-size: 3rem;
+	line-height: 1.13;
+	margin: 0 0 20px;
+
+	@include mq(tablet-landscape) {
+		font-size: 6rem;
+		line-height: 1.15;
+	}
+}
+
+//
+// Paragraph
+//
+%paragraph,
+p {
+	font-family: $sharp-medium;
+	font-size: 1.3rem;
+	line-height: 1.54;
+	margin: 0 0 20px 0;
+
+	@include mq(tablet-landscape) {
+		font-size: 1.6rem;
+		line-height: 1.63;
+	}
+
+	a {
+		color: color(wisteria);
+	}
+
+	&.copy-right{
+		line-height: inherit;
+		margin: 0 0 18px 0;
+	}
+
+}
+
+
+//
+// strong and italic
+//
+
+strong,
+b {
+	font-family: $sharp-bold;
+	font-weight: normal;
+}
+
+em,
+i {
+	font-family: $sharp-medium-italic;
+}
+
+strong em,
+em strong {
+	font-family: $sharp-bold-italic;
+	font-weight: normal;
+}
+
+//
+// list
+//
+
+.wrapper-main {
+	ul:not([class]) {
+		padding: 0;
+
+		> li {
+			color: color(river-bed);
+			font-family: $sharp-medium;
+			font-size: 1.3rem;
+			line-height: 1.54;
+			list-style: none;
+			margin: 0 0 20px 0;
+			padding: 0 0 0 8px;
+			position: relative;
+
+			@include mq(tablet-landscape) {
+				font-size: 1.6rem;
+				line-height: 1.63;
+			}
+
+			&::before {
+				background: color(river-bed);
+				border-radius: 50%;
+				content: "";
+				display: inline-block;
+				height: 2.5px;
+				left: 0;
+				margin: 0 5px 0 0;
+				position: absolute;
+				top: 12px;
+				width: 2.5px;
+			}
+		}
+	}
+
+	ol:not([class]) {
+		counter-reset: ol-numbers;
+		margin: 0 0 20px;
+		padding: 0;
+
+		> li {
+			color: color(river-bed);
+			counter-increment: ol-numbers;
+			font-family: $sharp-medium;
+			font-size: 1.3rem;
+			line-height: 1.54;
+			list-style: none;
+			margin: 0 0 20px 0;
+			padding: 0 0 0 15px;
+			position: relative;
+
+			@include mq(tablet-landscape) {
+				font-size: 1.6rem;
+				line-height: 1.63;
+			}
+
+			&::before {
+				color: color(river-bed);
+				content: counter(ol-numbers);
+				display: inline-block;
+				font-family: $sharp-bold;
+				font-size: 1.3rem;
+				left: 0;
+				margin: 0 5px 0 0;
+				position: absolute;
+				top: 0px;
+
+				@include mq(tablet-landscape) {
+					top: 2px;
+				}
+			}
+
+			@include mq(tablet-landscape) {
+				font-size: 1.6rem;
+			}
+		}
+	}
+}

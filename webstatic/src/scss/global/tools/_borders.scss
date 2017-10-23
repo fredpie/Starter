@@ -1,0 +1,78 @@
+
+
+// Border-radius
+
+%border-radius {
+    border-radius: 10px;
+}
+
+%border-radius-big {
+    border-radius: 10px;
+
+    @include mq(tablet){
+        border-radius: 20px;
+    }
+}
+
+%border-radius-small {
+    border-radius: 6px;
+
+    @include mq(tablet){
+        border-radius: 10px;
+    }
+}
+
+// Borders
+
+%border-thin {
+    @extend %border-radius-small;
+    border-style: solid;
+    border-width: 1px;
+
+    @include mq(tablet){
+        border-width: 2px;
+    }
+}
+
+%border-thick {
+    @extend %border-radius-big;
+    border-style: solid;
+    border-width: 2px;
+
+    @include mq(tablet){
+        border-width: 4px;
+    }
+}
+
+// border grey
+%border-thin--grey {
+    @extend %border-thin;
+
+    border-color: color(iron);
+}
+
+%border-thick--grey {
+    @extend %border-thick;
+
+    border-color: color(iron);
+}
+
+// border blue
+%border-thin--blue {
+    @extend %border-thin;
+
+    border-color: color(cerulean);
+}
+
+%border-thick--blue {
+    @extend %border-thick;
+
+    border-color: color(cerulean);
+}
+
+// border :required%border-thin--blue {
+%border-thin--red {
+    @extend %border-thin;
+
+    border-color: color(cardinal);
+}
